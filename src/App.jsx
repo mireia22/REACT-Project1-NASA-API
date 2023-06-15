@@ -1,11 +1,10 @@
 import "./App.css";
-const NASA_URL = "https://api.nasa.gov/";
-const NASA_API_KEY = "0GOgxVgiZmdhJVnsncUk3B8eFeNymufd2bXwnLxh";
 import React, { useEffect, useState } from "react";
 import Figure from "./components/Figure";
+import NASA_API_KEY from "../config";
+const NASA_URL = "https://api.nasa.gov/";
 
 function App() {
-  //Recuperem la data actual en format ISO= 2023-01-01
   const today = new Date(Date.now()).toISOString().slice(0, 10);
   const [date, setDate] = useState(today);
   const [apodData, setApodData] = useState(null);
@@ -17,23 +16,22 @@ function App() {
       ).then((res) => res.json());
 
       setApodData(data);
-
-      console.log(data);
     };
+
     fetchApodData();
   }, [date]);
 
   return (
     <>
       <div className="card">
-        <h1>Astronomic image of the day</h1>
-        <h3>This image corresponds on the date {date}</h3>
+        <h1>Imagen astronómica del día</h1>
+        <p>Esta imagen corresponde con la fecha {date}</p>
         <input
           type="date"
           value={date}
-          onChange={(e) => setDate(e.target.value.toLocaleString())}
+          onChange={(e) => setDate(e.target.value)}
         />
-        {<Figure data={apodData} />}
+        <Figure data={apodData} />
       </div>
     </>
   );

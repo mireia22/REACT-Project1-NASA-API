@@ -1,7 +1,5 @@
 import React from "react";
 import { useEffect, useState } from "react";
-const NASA_URL = "https://api.nasa.gov/";
-const NASA_API_KEY = "0GOgxVgiZmdhJVnsncUk3B8eFeNymufd2bXwnLxh";
 
 const Figure = ({ data }) => {
   if (data.code === 400) {
@@ -15,7 +13,7 @@ const Figure = ({ data }) => {
       </div>
       <div>
         <p>Date: {data.date}</p>
-        <p>Explanation: {data.explanation}</p>
+        <p className="explanation">Explanation: {data.explanation}</p>
       </div>
     </div>
   );

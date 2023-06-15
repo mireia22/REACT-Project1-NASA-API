@@ -1,0 +1,13 @@
+body {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  justify-content: center;
+  background-color: black;
+  color: white;
+  max-width: 100vh;
+}
+
+:root {
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+}

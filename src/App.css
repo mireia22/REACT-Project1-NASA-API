@@ -1,0 +1,25 @@
+.card {
+  padding: 3rem;
+}
+
+img {
+  max-width: 100%;
+}
+
+h1,
+h2 {
+  text-transform: uppercase;
+  background: linear-gradient(rgb(222, 177, 231) 30%, rgb(179, 13, 143) 90%);
+  -webkit-background-clip: text;
+  color: transparent;
+  background-clip: text;
+}
+
+h2 {
+  text-transform: none;
+}
+p {
+  line-height: 1.8rem;
+  text-align: start;
+  letter-spacing: 0.3reem;
+}

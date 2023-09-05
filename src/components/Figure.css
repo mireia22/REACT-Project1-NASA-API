@@ -21,8 +21,8 @@
 }
 
 .card-image {
-  height: 10rem;
-  max-width: 25rem;
+  height: 15rem;
+  width: auto;
   margin: 1rem auto;
 }
 
@@ -38,6 +38,7 @@
   justify-content: center;
 }
 
+.errorBtn,
 .input-select > select,
 .input-select > input {
   border: none;
@@ -45,4 +46,12 @@
   background-color: rgba(152, 131, 27, 0.9);
   color: white;
   padding: 0.2rem;
+}
+
+@media screen and (min-width < 400px) {
+  .imageWrp {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
 }

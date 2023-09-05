@@ -1,5 +1,4 @@
 import React from "react";
-import "./App.css";
 import Figure from "./components/Figure";
 
 const App = () => {

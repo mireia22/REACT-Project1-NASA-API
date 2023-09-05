@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { formatDistance, subDays } from "date-fns";
-
+import { subDays } from "date-fns";
 import "./Figure.css";
+import ApodData from "./ApodData/ApodData";
+import MarsData from "./MarsData/MarsData";
 
 const Figure = () => {
   const today = new Date().toISOString().slice(0, 10);
@@ -11,61 +12,83 @@ const Figure = () => {
   const [apodData, setApodData] = useState(null);
   const [marsData, setMarsData] = useState(null);
   const [selectedOption, setSelectedOption] = useState("apod");
-  console.log(date);
-  const NASA_URL = "https://api.nasa.gov/";
-  const API_KEY = import.meta.env.VITE_NASA_KEY;
 
   useEffect(() => {
+    const NASA_URL = "https://api.nasa.gov/";
+    const API_KEY = import.meta.env.VITE_NASA_KEY;
+
+    const selectedDate = new Date(date);
+    const todayDate = new Date(today);
+    if (selectedDate > todayDate) {
+      return;
+    }
+
     const fetchData = async () => {
-      if (selectedOption === "apod") {
-        const apodURL = `${NASA_URL}planetary/apod?date=${date}&api_key=${API_KEY}`;
-        const data = await fetch(apodURL).then((res) => res.json());
-        setApodData(data);
-        setMarsData(null);
-      } else if (selectedOption === "mars") {
-        const marsURL = `${NASA_URL}mars-photos/api/v1/rovers/curiosity/photos?earth_date=${date}&api_key=${API_KEY}`;
-        const data = await fetch(marsURL).then((res) => res.json());
-        setMarsData(data);
-        setApodData(null);
-        console.log(data);
+      try {
+        let data;
+        if (selectedOption === "apod") {
+          const apodURL = `${NASA_URL}planetary/apod?date=${date}&api_key=${API_KEY}`;
+          data = await fetch(apodURL).then((res) => res.json());
+          setApodData(data);
+          setMarsData(null);
+        } else if (selectedOption === "mars") {
+          const marsURL = `${NASA_URL}mars-photos/api/v1/rovers/curiosity/photos?earth_date=${date}&api_key=${API_KEY}`;
+          data = await fetch(marsURL).then((res) => res.json());
+          setMarsData(data);
+          setApodData(null);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
       }
     };
 
     fetchData();
   }, [date, selectedOption]);
 
+  //APOD AND MARS DATA MANAGING
   if (apodData === null && marsData === null) {
     return <p>Loading...</p>;
   }
 
-  if (apodData && apodData.code === 400) {
+  // DATA MANAGING
+  // DATA MANAGING
+  if (apodData && date > today) {
     return (
       <>
-        <h2>{apodData.msg}</h2>
-        <button onClick={() => setDate(today)}>Return</button>
+        <h2>Tomorrow image will be published tomorrow 😅</h2>
+        <button className="errorBtn" onClick={() => setDate(today)}>
+          Return
+        </button>
       </>
     );
   }
 
-  if (marsData && date >= today) {
-    return (
-      <>
-        <h2>
-          Today's images have not been processed, so we're going to show you
-          yesterday's images
-        </h2>
-        <button onClick={() => setDate(yesterday)}>Return</button>
-      </>
-    );
-  }
-
-  if (marsData && marsData.code === 400) {
-    return (
-      <>
-        <h2>{marsData.msg}</h2>
-        <button onClick={() => setDate(today)}>Return</button>
-      </>
-    );
+  if (marsData) {
+    if (date >= today) {
+      return (
+        <>
+          <h2>
+            Mars photos are updated until yesterday.
+            <br />
+            Today's photos will be published tomorrow.
+            <br />
+            I'll redirect you to yesterday's photos 😉
+          </h2>{" "}
+          <button className="errorBtn" onClick={() => setDate(yesterday)}>
+            Return
+          </button>
+        </>
+      );
+    } else if (date > today) {
+      return (
+        <>
+          <h2>Tomorrow image will be published tomorrow 😅</h2>
+          <button className="errorBtn" onClick={() => setDate(yesterday)}>
+            Return
+          </button>
+        </>
+      );
+    }
   }
 
   return (
@@ -78,6 +101,7 @@ const Figure = () => {
       ) : (
         ""
       )}
+
       <div className="input-select">
         <input
           type="date"
@@ -93,22 +117,13 @@ const Figure = () => {
           <option value="mars">MARS</option>
         </select>
       </div>
+
       {selectedOption === "apod" && apodData && (
-        <>
-          <div className="card-image">
-            <img src={apodData.url} alt={apodData.title} />
-          </div>
-          <h3>{apodData.title}</h3>
-          <p>{apodData.explanation}</p>
-        </>
+        <ApodData apodData={apodData} />
       )}
-      {selectedOption === "mars" &&
-        marsData &&
-        marsData.photos.map((photo) => (
-          <div key={photo.id} className="card-image">
-            <img src={photo.img_src} alt={`Mars Rover - ${photo.id}`} />
-          </div>
-        ))}
+      {selectedOption === "mars" && marsData && (
+        <MarsData marsData={marsData} />
+      )}
     </div>
   );
 };

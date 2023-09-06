@@ -4,10 +4,10 @@ const ApodData = ({ apodData }) => {
   return (
     <div>
       <div className="card-image">
-        <img src={apodData.url} alt={apodData.title} />
+        <img src={apodData.url} alt={`Image: ${apodData.title}`} />
       </div>
-      <h3>{apodData.title}</h3>
-      <p>{apodData.explanation}</p>
+      <h3 className="data-title">{apodData.title}</h3>
+      <p className="data-explanation">{apodData.explanation}</p>
     </div>
   );
 };

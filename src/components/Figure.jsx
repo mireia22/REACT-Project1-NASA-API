@@ -3,9 +3,15 @@ import { subDays } from "date-fns";
 import "./Figure.css";
 import ApodData from "./ApodData/ApodData";
 import MarsData from "./MarsData/MarsData";
+import DateSelector from "./DateSelector/DateSelector";
+import renderDataMessage from "./DataMessage/DataMessage";
+import LoadingSpinner from "./LoadingSpinner/LoadingSpinner";
+
+const NASA_URL = "https://api.nasa.gov/";
+const API_KEY = import.meta.env.VITE_NASA_KEY;
 
 const Figure = () => {
-  const today = new Date().toISOString().slice(0, 10);
+  const today = new Date().toISOString().slice(0, 10); // Move the declaration here
   const yesterday = subDays(new Date(today), 1).toISOString().slice(0, 10);
 
   const [date, setDate] = useState(today);
@@ -13,118 +19,120 @@ const Figure = () => {
   const [marsData, setMarsData] = useState(null);
   const [selectedOption, setSelectedOption] = useState("apod");
 
-  useEffect(() => {
-    const NASA_URL = "https://api.nasa.gov/";
-    const API_KEY = import.meta.env.VITE_NASA_KEY;
+  const selectedDate = new Date(date);
+  const currentDate = new Date();
 
-    const selectedDate = new Date(date);
-    const todayDate = new Date(today);
-    if (selectedDate > todayDate) {
+  const fetchData = async (endpoint, setData) => {
+    try {
+      const response = await fetch(endpoint);
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const data = await response.json();
+      setData(data);
+      console.log("data:", data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (selectedDate > currentDate) {
       return;
     }
+    if (selectedOption === "apod") {
+      const apodURL = `${NASA_URL}planetary/apod?date=${date}&api_key=${API_KEY}`;
+      fetchData(apodURL, setApodData);
+      setMarsData(null);
+    } else if (selectedOption === "mars") {
+      const marsURL = `${NASA_URL}mars-photos/api/v1/rovers/curiosity/photos?earth_date=${date}&api_key=${API_KEY}`;
+      fetchData(marsURL, setMarsData);
+      setApodData(null);
+    }
+  }, [selectedOption, date]);
 
-    const fetchData = async () => {
-      try {
-        let data;
-        if (selectedOption === "apod") {
-          const apodURL = `${NASA_URL}planetary/apod?date=${date}&api_key=${API_KEY}`;
-          data = await fetch(apodURL).then((res) => res.json());
-          setApodData(data);
-          setMarsData(null);
-        } else if (selectedOption === "mars") {
-          const marsURL = `${NASA_URL}mars-photos/api/v1/rovers/curiosity/photos?earth_date=${date}&api_key=${API_KEY}`;
-          data = await fetch(marsURL).then((res) => res.json());
-          setMarsData(data);
-          setApodData(null);
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    fetchData();
-  }, [date, selectedOption]);
-
-  //APOD AND MARS DATA MANAGING
   if (apodData === null && marsData === null) {
-    return <p>Loading...</p>;
+    return <LoadingSpinner />;
   }
 
-  // DATA MANAGING
-  // DATA MANAGING
   if (apodData && date > today) {
-    return (
+    return renderDataMessage(
       <>
-        <h2>Tomorrow image will be published tomorrow 😅</h2>
-        <button className="errorBtn" onClick={() => setDate(today)}>
-          Return
-        </button>
-      </>
+        We only upload images up to TODAY'S date.
+        <br />
+        To see the image for tomorrow or the coming days,
+        <br />
+        COME BACK AGAIN.
+        <br />
+        you will surely love them. 😉
+      </>,
+      () => setDate(today)
     );
   }
 
-  if (marsData) {
-    if (date >= today) {
-      return (
-        <>
-          <h2>
-            Mars photos are updated until yesterday.
-            <br />
-            Today's photos will be published tomorrow.
-            <br />
-            I'll redirect you to yesterday's photos 😉
-          </h2>{" "}
-          <button className="errorBtn" onClick={() => setDate(yesterday)}>
-            Return
-          </button>
-        </>
-      );
-    } else if (date > today) {
-      return (
-        <>
-          <h2>Tomorrow image will be published tomorrow 😅</h2>
-          <button className="errorBtn" onClick={() => setDate(yesterday)}>
-            Return
-          </button>
-        </>
-      );
-    }
+  if (marsData && date > today) {
+    return renderDataMessage(
+      <>
+        We only upload images up to YESTERDAY'S date.
+        <br />
+        So I'm redirecting you to yesterday's data.
+        <br />
+        To see today's image,
+        <br />
+        COME BACK AGAIN tomorrow,
+        <br />
+        you will surely love them. 😉
+      </>,
+      () => setDate(yesterday)
+    );
   }
 
+  if (marsData && date === today) {
+    return renderDataMessage(
+      <>
+        Today's Mars data will be published tomorrow.
+        <br />
+        So I'm redirecting you to yesterday's data.
+        <br />
+        To see today's image,
+        <br />
+        COME BACK AGAIN tomorrow,
+        <br />
+        you will surely love them. 😉
+      </>,
+      () => setDate(yesterday)
+    );
+  }
   return (
-    <div className="card-details">
-      <h1>ASTRONOMIC IMAGE OF THE DAY</h1>
-      {selectedOption === "apod" && apodData ? (
-        <h3>This image corresponds to {date} </h3>
-      ) : selectedOption === "mars" && marsData ? (
-        <h3>These images correspond to {date} </h3>
-      ) : (
-        ""
-      )}
-
-      <div className="input-select">
-        <input
-          type="date"
-          value={date}
-          onChange={(e) => setDate(e.target.value.toLocaleString())}
+    <main className="card-details">
+      <section>
+        {apodData || marsData ? (
+          <h3 className="date-text">
+            {selectedOption === "apod"
+              ? "This image corresponds "
+              : "These images correspond "}
+            to <br />
+            {date}
+          </h3>
+        ) : null}
+      </section>
+      <section>
+        <DateSelector
+          date={date}
+          setDate={setDate}
+          selectedOption={selectedOption}
+          setSelectedOption={setSelectedOption}
         />
-        <select
-          id="data-select"
-          value={selectedOption}
-          onChange={(e) => setSelectedOption(e.target.value)}
-        >
-          <option value="apod">APOD</option>
-          <option value="mars">MARS</option>
-        </select>
-      </div>
-
-      {selectedOption === "apod" && apodData && (
-        <ApodData apodData={apodData} />
-      )}
-      {selectedOption === "mars" && marsData && (
-        <MarsData marsData={marsData} />
-      )}
-    </div>
+      </section>
+      <section>
+        {selectedOption === "apod" && apodData && (
+          <ApodData apodData={apodData} />
+        )}
+        {selectedOption === "mars" && marsData && (
+          <MarsData marsData={marsData} />
+        )}
+      </section>
+    </main>
   );
 };
 

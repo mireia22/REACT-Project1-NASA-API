@@ -1,14 +1,24 @@
-body {
+:root {
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  --primary-color: #98831b;
+  --font-color: white;
+  --background-color: black;
+}
+
+* {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
+  list-style-type: none;
+  text-decoration: none;
+}
+body {
   align-items: center;
   text-align: center;
   justify-content: center;
-  background-color: black;
-  color: white;
+  background-image: url("https://www.transparenttextures.com/patterns/asfalt-light.png");
+  background-color: var(--background-color);
+  color: var(--font-color);
   width: 100%;
-}
-
-:root {
-  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  min-height: 100vh;
 }

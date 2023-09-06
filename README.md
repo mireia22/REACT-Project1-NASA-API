@@ -8,10 +8,10 @@ Welcome to the NASA Data Explorer, your gateway to the cosmos!
 Discover breathtaking Astronomy Pictures of the Day (APOD) and explore rugged Martian landscapes captured by rovers.
 
 <p align="center">
-  <img src="../NASA/public/assets/images/capture nasa project.jpg" alt="NASA Data Explorer Screenshot" />
+  <img src="./public/assets/images/apod.jpg" alt="NASA Data Explorer Screenshot" />
 </p>
 <p align="center">
-  <img src="../NASA/public/assets/images/capture mars rover.jpg.jpg" alt="NASA Data Explorer Screenshot" />
+  <img src="./public/assets/images/marsrover.jpg" alt="NASA Data Explorer Screenshot" />
 </p>
 
 ## 🚀 Features

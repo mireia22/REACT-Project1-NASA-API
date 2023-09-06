@@ -1,11 +1,8 @@
-import React from "react";
-
+import ImageWithFallback from "../FallBackImage/FallBackImage";
 const ApodData = ({ apodData }) => {
   return (
     <div>
-      <div className="card-image">
-        <img src={apodData.url} alt={`Image: ${apodData.title}`} />
-      </div>
+      <ImageWithFallback src={apodData.url} alt={`Image: ${apodData.title}`} />
       <h3 className="data-title">{apodData.title}</h3>
       <p className="data-explanation">{apodData.explanation}</p>
     </div>

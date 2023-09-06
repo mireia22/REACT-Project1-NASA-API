@@ -1,4 +1,4 @@
-import React from "react";
+import ImageWithFallback from "../FallBackImage/FallBackImage";
 
 const MarsData = ({ marsData }) => {
   return (
@@ -6,9 +6,10 @@ const MarsData = ({ marsData }) => {
       {marsData.photos.map((photo) => (
         <div key={photo.id}>
           <h4>Camera: {photo.camera.name}</h4>
-          <div className="card-image">
-            <img src={photo.img_src} alt={`Mars Rover - ${photo.id}`} />
-          </div>
+          <ImageWithFallback
+            src={photo.img_src}
+            alt={`Mars Rover - ${photo.id}`}
+          />
         </div>
       ))}
     </div>

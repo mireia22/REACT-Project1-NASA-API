@@ -6,6 +6,11 @@ import MarsData from "./MarsData/MarsData";
 import DateSelector from "./DateSelector/DateSelector";
 import renderDataMessage from "./DataMessage/DataMessage";
 import LoadingSpinner from "./LoadingSpinner/LoadingSpinner";
+import {
+  APOD_DATE_MESSAGE,
+  MARS_DATE_MESSAGE_TODAY,
+  MARS_DATE_MESSAGE_YESTERDAY,
+} from "./Constants/Constants";
 
 const NASA_URL = "https://api.nasa.gov/";
 const API_KEY = import.meta.env.VITE_NASA_KEY;
@@ -61,51 +66,16 @@ const Figure = () => {
   }, [selectedOption, date]);
 
   if (apodData && date > today) {
-    return renderDataMessage(
-      <>
-        We only upload images up to TODAY'S date.
-        <br />
-        To see the image for tomorrow or the coming days,
-        <br />
-        COME BACK AGAIN.
-        <br />
-        you will surely love them. 😉
-      </>,
-      () => setDate(today)
-    );
+    return renderDataMessage(APOD_DATE_MESSAGE, () => setDate(today));
   }
 
   if (marsData && date > today) {
-    return renderDataMessage(
-      <>
-        We only upload images up to YESTERDAY'S date.
-        <br />
-        So I'm redirecting you to yesterday's data.
-        <br />
-        To see today's image,
-        <br />
-        COME BACK AGAIN tomorrow,
-        <br />
-        you will surely love them. 😉
-      </>,
-      () => setDate(yesterday)
-    );
+    return renderDataMessage(MARS_DATE_MESSAGE_TODAY, () => setDate(yesterday));
   }
 
   if (marsData && date === today) {
-    return renderDataMessage(
-      <>
-        Today's Mars data will be published tomorrow.
-        <br />
-        So I'm redirecting you to yesterday's data.
-        <br />
-        To see today's image,
-        <br />
-        COME BACK AGAIN tomorrow,
-        <br />
-        you will surely love them. 😉
-      </>,
-      () => setDate(yesterday)
+    return renderDataMessage(MARS_DATE_MESSAGE_YESTERDAY, () =>
+      setDate(yesterday)
     );
   }
   return (

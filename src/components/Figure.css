@@ -85,6 +85,7 @@ footer {
   font-size: 2rem;
   margin-right: 3px;
   color: var(--primary-color);
+  font-family: "Audiowide", cursive;
 }
 
 .data-message {
@@ -109,6 +110,7 @@ footer {
   color: var(--font-color);
   padding: 0.3rem;
   font-weight: bold;
+  cursor: pointer;
 }
 
 @media screen and (width > 400px) {

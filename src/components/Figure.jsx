@@ -18,6 +18,7 @@ const Figure = () => {
   const [apodData, setApodData] = useState(null);
   const [marsData, setMarsData] = useState(null);
   const [selectedOption, setSelectedOption] = useState("apod");
+  const [isLoading, setIsLoading] = useState(false);
 
   const selectedDate = new Date(date);
   const currentDate = new Date();
@@ -38,22 +39,26 @@ const Figure = () => {
 
   useEffect(() => {
     if (selectedDate > currentDate) {
+      setIsLoading(false);
       return;
     }
+
+    setIsLoading(true);
+
     if (selectedOption === "apod") {
       const apodURL = `${NASA_URL}planetary/apod?date=${date}&api_key=${API_KEY}`;
-      fetchData(apodURL, setApodData);
+      fetchData(apodURL, setApodData)
+        .then(() => setIsLoading(false))
+        .catch(() => setIsLoading(false));
       setMarsData(null);
     } else if (selectedOption === "mars") {
       const marsURL = `${NASA_URL}mars-photos/api/v1/rovers/curiosity/photos?earth_date=${date}&api_key=${API_KEY}`;
-      fetchData(marsURL, setMarsData);
+      fetchData(marsURL, setMarsData)
+        .then(() => setIsLoading(false))
+        .catch(() => setIsLoading(false));
       setApodData(null);
     }
   }, [selectedOption, date]);
-
-  if (apodData === null && marsData === null) {
-    return <LoadingSpinner />;
-  }
 
   if (apodData && date > today) {
     return renderDataMessage(
@@ -125,11 +130,17 @@ const Figure = () => {
         />
       </section>
       <section>
-        {selectedOption === "apod" && apodData && (
-          <ApodData apodData={apodData} />
-        )}
-        {selectedOption === "mars" && marsData && (
-          <MarsData marsData={marsData} />
+        {!isLoading ? (
+          <>
+            {selectedOption === "apod" && apodData && (
+              <ApodData apodData={apodData} />
+            )}
+            {selectedOption === "mars" && marsData && (
+              <MarsData marsData={marsData} />
+            )}
+          </>
+        ) : (
+          <LoadingSpinner />
         )}
       </section>
     </main>

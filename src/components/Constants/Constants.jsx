@@ -1,26 +1,35 @@
 //DATE ERROR MESSAGES
 export const APOD_DATE_MESSAGE = `
-  We only upload images up to TODAY'S date.
-  To see the image for tomorrow or the coming days,
-  COME BACK AGAIN.
-  you will surely love them. 😉
-`;
+  We only upload images 
+  up to TODAY'S date.
+  To see the image for tomorrow 
+  or the coming days,
+  COME BACK AGAIN tomorrow.
+  You will surely love them. 
+  😉
+`.trim();
 
 export const MARS_DATE_MESSAGE_TODAY = `
-  We only upload images up to YESTERDAY'S date.
-  So I'm redirecting you to yesterday's data.
+  We only upload images
+  up to YESTERDAY'S date.
+  So I'm redirecting you 
+  to yesterday's data.
   To see today's image,
   COME BACK AGAIN tomorrow,
-  you will surely love them. 😉
-`;
+  you will surely love them. 
+  😉
+`.trim();
 
 export const MARS_DATE_MESSAGE_YESTERDAY = `
-  Today's Mars data will be published tomorrow.
-  So I'm redirecting you to yesterday's data.
+  Today's Mars data
+  will be published tomorrow.
+  So you'll be redirected
+  to yesterday's data.
   To see today's image,
   COME BACK AGAIN tomorrow,
-  you will surely love them. 😉
-`;
+  you will surely love them.
+  😉
+`.trim();
 
 //FALLBACK IMAGE
 export const FALLBACK_IMAGE =

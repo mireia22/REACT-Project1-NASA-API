@@ -36,7 +36,6 @@ const Figure = () => {
       }
       const data = await response.json();
       setData(data);
-      console.log("data:", data);
     } catch (error) {
       console.error("Error fetching data:", error);
     }

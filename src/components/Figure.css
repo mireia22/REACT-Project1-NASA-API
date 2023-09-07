@@ -1,10 +1,21 @@
 @import url("https://fonts.googleapis.com/css2?family=Audiowide&display=swap");
 
+/* LOADING SPINNER */
 .loading-spinner {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 50vh;
+}
+
+/* FAIL DATA MESSAGE */
+.data-message {
+  line-height: 3rem;
+  padding: 3rem 2rem;
+  min-height: calc(100vh - (94px + 33px));
+  > h3 {
+    white-space: pre-line;
+  }
 }
 
 /* HEADER */
@@ -32,10 +43,8 @@ footer {
 .ancore-wrp {
   display: flex;
   gap: 0.5rem;
-
   > a {
     cursor: pointer;
-
     > img {
       width: 1.5rem;
     }
@@ -55,11 +64,11 @@ footer {
   color: var(--font-color);
   font-family: "Audiowide", cursive;
   letter-spacing: 1px;
-  font-size: 0.8rem;
+  font-size: 1rem;
 }
 
 .card-image {
-  width: 250px;
+  width: 300px;
   height: auto;
   margin: 1rem auto;
 }
@@ -70,36 +79,48 @@ footer {
   border-radius: 5px;
 }
 
-.data-title {
-  padding: 0.5rem;
-}
-
+/* APOD */
 .data-explanation {
   line-height: 1.5rem;
   letter-spacing: 1px;
-  padding: 2rem;
-  hyphens: auto;
+  padding: 1rem 2rem;
 }
 
 .data-explanation::first-letter {
   font-size: 2rem;
-  margin-right: 3px;
+  margin-right: 2px;
   color: var(--primary-color);
   font-family: "Audiowide", cursive;
 }
 
-.data-message {
-  line-height: 3rem;
-  padding: 3rem 2rem;
-  min-height: calc(100vh - (94px + 33px));
+/* MARS */
+.mars-filter {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
+.marsBtns-wrp {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.marsBtns {
+  border: 2px solid var(--primary-color);
+  background-color: transparent;
+  min-width: 4rem;
+}
+
+/* ALL */
 .input-select {
   display: flex;
   gap: 1rem;
   justify-content: center;
 }
 
+.marsBtns,
 .returnBtn,
 .errorBtn,
 .input-select > select,
@@ -114,15 +135,60 @@ footer {
 }
 
 @media screen and (width > 400px) {
+  /* ALL */
+  .card-details {
+    gap: 2rem;
+  }
+
   .card-image {
-    width: 250px;
+    width: 400px;
     height: auto;
     margin: 1rem auto;
   }
 
+  /* APOD */
+  .apod-wrp {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0rem 2rem;
+    align-items: center;
+  }
+
+  .apod-wrp > * {
+    flex-basis: 50%;
+  }
+
+  .apod-text {
+    flex: 1 0 2rem;
+  }
+
   .imageWrp {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2rem;
+    grid-template-columns: repeat(2, 1fr);
+    padding: 0rem 4rem;
+  }
+
+  .data-explanation {
+    text-align: justify;
+    padding: 0 2rem;
+  }
+
+  /* MARS */
+  .mars-filter {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .marsBtns-wrp {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .marsBtns {
+    border: 2px solid var(--primary-color);
+    background-color: transparent;
+    min-width: 4rem;
   }
 }

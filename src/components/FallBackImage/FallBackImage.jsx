@@ -16,6 +16,7 @@ const ImageWithFallback = ({ src, alt }) => {
           alt={alt}
           onError={() => setImageNotFound(true)}
           style={style}
+          loading="lazy"
         />
       </div>
       {imageNotFound && <p>{FALLBACK_MESSAGE}</p>}

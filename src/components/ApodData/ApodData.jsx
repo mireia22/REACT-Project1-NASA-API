@@ -1,10 +1,13 @@
 import ImageWithFallback from "../FallBackImage/FallBackImage";
 const ApodData = ({ apodData }) => {
   return (
-    <div>
+    <div className="apod-wrp">
       <ImageWithFallback src={apodData.url} alt={`Image: ${apodData.title}`} />
-      <h3 className="data-title">{apodData.title}</h3>
-      <p className="data-explanation">{apodData.explanation}</p>
+
+      <div className="apod-text">
+        <h2 className="data-title">{apodData.title}</h2>
+        <p className="data-explanation">{apodData.explanation}</p>
+      </div>
     </div>
   );
 };

@@ -14,7 +14,7 @@ const MarsData = ({ marsData }) => {
       (photo) => photo.camera.name === cameraName
     ).camera.id;
     setSelectedCamera(selectedCameraId);
-    setSelectedCameraName(cameraName); // Update the selected camera name
+    setSelectedCameraName(cameraName);
   };
 
   return (

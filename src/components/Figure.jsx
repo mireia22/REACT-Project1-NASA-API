@@ -16,7 +16,7 @@ const NASA_URL = "https://api.nasa.gov/";
 const API_KEY = import.meta.env.VITE_NASA_KEY;
 
 const Figure = () => {
-  const today = new Date().toISOString().slice(0, 10); // Move the declaration here
+  const today = new Date().toISOString().slice(0, 10);
   const yesterday = subDays(new Date(today), 1).toISOString().slice(0, 10);
 
   const [date, setDate] = useState(today);
